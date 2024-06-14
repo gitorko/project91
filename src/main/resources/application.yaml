@@ -1,0 +1,10 @@
+spring:
+  main:
+    banner-mode: "off"
+  application:
+    name: project91
+  datasource:
+    host: localhost
+    url: jdbc:postgresql://${spring.datasource.host}:5432/test-db
+    username: test
+    password: test@123
