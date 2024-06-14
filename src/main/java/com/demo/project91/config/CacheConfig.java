@@ -6,14 +6,14 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class CacheConfig {
 
-    @Bean
-    public CacheManager cacheManager() {
-        SpringCacheManager cacheManager = new SpringCacheManager();
-        cacheManager.setIgniteInstanceName("testIgniteInstance");
-        return cacheManager;
-    }
+//    @Bean
+//    public CacheManager cacheManager() {
+//        SpringCacheManager cacheManager = new SpringCacheManager();
+//        cacheManager.setIgniteInstanceName("my-ignite-instance");
+//        return cacheManager;
+//    }
 }

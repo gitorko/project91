@@ -27,9 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-
     implementation 'org.springframework.data:spring-data-commons'
-
     implementation 'org.apache.ignite:ignite-spring-cache-ext:1.0.0'
     implementation 'org.apache.ignite:ignite-spring:2.16.0'
     implementation 'org.apache.ignite:ignite-spring'

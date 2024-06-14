@@ -14,7 +14,7 @@ import org.apache.ignite.cache.query.annotations.QuerySqlField;
 @NoArgsConstructor
 @Builder
 @QueryGroupIndex.List(@QueryGroupIndex(name = "idx1"))
-public class Customer implements Serializable {
+public class Employee implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
@@ -27,18 +27,7 @@ public class Customer implements Serializable {
     /**
      *  QuerySqlField.Group field will be group indexed.
      */
-    @QuerySqlField.Group(name = "idx1", order = 0)
     @QuerySqlField(index = true)
-    private String firstName;
-    @QuerySqlField(index = true)
-    @QuerySqlField.Group(name = "idx1", order = 1)
-    private String lastName;
-
-    private Integer age;
-    /**
-     *  @QuerySqlField field will be part of query but not indexed.
-     */
-    @QuerySqlField
-    private String country;
-
+    private String name;
+    private String email;
 }

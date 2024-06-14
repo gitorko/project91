@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "e282e47f-abc3-4039-85a9-8978f4330eeb",
+		"name": "Project91",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4185850"
+	},
+	"item": [
+		{
+			"name": "Ignite Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Customer To Ignite Repo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"age\": 40,\n    \"country\": \"US\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer From Ignite Repo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customers From Ignite Repo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert Accounts To Ignite Repo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/account/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"account",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts From Ignite Repo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cache Seed Country",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cache/seed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"seed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cache Fetch Country",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cache/FR",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"FR"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Employee To Ignite Cache",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"email\": \"john@company.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employees From Ignite Cache",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
