@@ -8,6 +8,7 @@ import java.util.List;
 import javax.cache.configuration.Factory;
 import javax.sql.DataSource;
 
+import com.demo.project91.pojo.Company;
 import com.demo.project91.pojo.Customer;
 import com.demo.project91.pojo.Employee;
 import org.apache.ignite.Ignite;
@@ -52,6 +53,7 @@ public class IgniteConfig {
         Ignite ignite = Ignition.start(igniteConfiguration());
 
         /**
+         * Only for dev testing
          * If data is persisted then have to explicitly set the cluster state to active.
          * If there are 3 nodes cluster then this is not required.
          */
@@ -86,15 +88,22 @@ public class IgniteConfig {
     @Bean(name = "cacheConfiguration")
     public CacheConfiguration[] cacheConfiguration() {
         List<CacheConfiguration> cacheConfigurations = new ArrayList<>();
+        cacheConfigurations.add(getAccountCacheConfig());
+        cacheConfigurations.add(getCustomerCacheConfig());
+        cacheConfigurations.add(getCountryCacheConfig());
+        cacheConfigurations.add(getEmployeeCacheConfig());
+        return cacheConfigurations.toArray(new CacheConfiguration[cacheConfigurations.size()]);
+    }
 
+    private CacheConfiguration getAccountCacheConfig() {
         /**
          * Ignite table to store Account data
          */
-        CacheConfiguration cc1 = new CacheConfiguration();
-        cc1.setAtomicityMode(CacheAtomicityMode.ATOMIC);
-        cc1.setCacheMode(CacheMode.REPLICATED);
-        cc1.setName("account-cache");
-        cc1.setStatisticsEnabled(true);
+        CacheConfiguration cacheConfig = new CacheConfiguration();
+        cacheConfig.setAtomicityMode(CacheAtomicityMode.ATOMIC);
+        cacheConfig.setCacheMode(CacheMode.REPLICATED);
+        cacheConfig.setName("account-cache");
+        cacheConfig.setStatisticsEnabled(true);
         QueryEntity qe = new QueryEntity();
         qe.setTableName("ACCOUNTS");
         qe.setKeyFieldName("ID");
@@ -105,52 +114,56 @@ public class IgniteConfig {
         map.put("amount", "java.lang.Double");
         map.put("updateDate", "java.util.Date");
         qe.setFields(map);
-        cc1.setQueryEntities(List.of(qe));
+        cacheConfig.setQueryEntities(List.of(qe));
+        return cacheConfig;
+    }
 
+    private CacheConfiguration<Long, Customer> getCustomerCacheConfig() {
         /**
          * Customer cache to store Customer.class objects
          */
-        CacheConfiguration<Long, Customer> cc2 = new CacheConfiguration("customer-cache");
-        cc2.setIndexedTypes(Long.class, Customer.class);
+        CacheConfiguration<Long, Customer> cacheConfig = new CacheConfiguration("customer-cache");
+        cacheConfig.setIndexedTypes(Long.class, Customer.class);
+        return cacheConfig;
+    }
 
+    private CacheConfiguration getCountryCacheConfig() {
         /**
          * Country cache to store key value pair
          */
-        CacheConfiguration cc3 = new CacheConfiguration("country-cache");
+        CacheConfiguration cacheConfig = new CacheConfiguration("country-cache");
+        return cacheConfig;
+    }
 
+    private CacheConfiguration<Long, Employee> getEmployeeCacheConfig() {
         /**
          * Employee cache to store Employee.class objects
          */
-        CacheConfiguration<Long, Employee> cc4 = new CacheConfiguration("employee-cache");
-        cc4.setIndexedTypes(Long.class, Employee.class);
-        cc4.setCacheStoreFactory(cacheJdbcPojoStoreFactory());
+        CacheConfiguration<Long, Employee> cacheConfig = new CacheConfiguration("employee-cache");
+        cacheConfig.setIndexedTypes(Long.class, Employee.class);
+        cacheConfig.setCacheStoreFactory(cacheJdbcPojoStoreFactory());
         /**
          * If value not present in cache then fetch from db and store in cache
          */
-        cc4.setReadThrough(true);
+        cacheConfig.setReadThrough(true);
         /**
          * If value present in cache then write to db.
          */
-        cc4.setWriteThrough(true);
+        cacheConfig.setWriteThrough(true);
         /**
          * Will wait for sometime to update db asynchronously
          */
-        cc4.setWriteBehindEnabled(true);
+        cacheConfig.setWriteBehindEnabled(true);
         /**
          * Min 2 entires in cache before written to db
          */
-        cc4.setWriteBehindFlushSize(2);
+        cacheConfig.setWriteBehindFlushSize(2);
         /**
          * Write to DB at interval delay of 2 seconds
          */
-        cc4.setWriteBehindFlushFrequency(2000);
-        cc4.setIndexedTypes(Long.class, Employee.class);
-
-        cacheConfigurations.add(cc1);
-        cacheConfigurations.add(cc2);
-        cacheConfigurations.add(cc3);
-        cacheConfigurations.add(cc4);
-        return cacheConfigurations.toArray(new CacheConfiguration[cacheConfigurations.size()]);
+        cacheConfig.setWriteBehindFlushFrequency(2000);
+        cacheConfig.setIndexedTypes(Long.class, Employee.class);
+        return cacheConfig;
     }
 
     private CacheJdbcPojoStoreFactory cacheJdbcPojoStoreFactory() {
@@ -216,7 +229,6 @@ public class IgniteConfig {
 
     /**
      * Since it serializes you cant pass variables. Use the DbFactory.class
-     * @return
      */
     private Factory<DataSource> getDataSourceFactory() {
         return () -> {

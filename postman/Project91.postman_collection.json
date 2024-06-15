@@ -200,7 +200,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Employees From Ignite Cache - node1",
+			"name": "Get Employees From Ignite Cache",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -211,6 +211,25 @@
 						"localhost"
 					],
 					"port": "8080",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employees From Ignite Cache - node1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
 					"path": [
 						"employee"
 					]
@@ -251,6 +270,45 @@
 					"port": "8082",
 					"path": [
 						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert Mock Company Data to DB Directly",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/company/mock-data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"company",
+						"mock-data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Company",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/company",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"company"
 					]
 				}
 			},

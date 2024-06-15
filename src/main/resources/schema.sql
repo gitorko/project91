@@ -4,3 +4,9 @@ create table if not exists public.employee
     name  varchar,
     email varchar
 );
+
+create table if not exists public.company
+(
+    id    bigint,
+    name  varchar
+);
