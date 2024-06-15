@@ -66,9 +66,4 @@ public class CustomerService {
         return sb.toString();
     }
 
-//    @Cacheable(cacheNames = "CustomerCache", key = "#id")
-//    public Optional<Customer> findById(Long id) {
-//        log.info("Fetching from ignite db");
-//        return customerRepository.findById(id);
-//    }
 }
