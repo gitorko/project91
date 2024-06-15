@@ -24,12 +24,11 @@ import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.DataRegionConfiguration;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.failure.NoOpFailureHandler;
 import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
+import org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder;
 import org.apache.ignite.springdata.repository.config.EnableIgniteRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +38,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @EnableIgniteRepositories("com.demo.project91.repository")
 public class IgniteConfig {
 
-    @Autowired
-    DataSource datasource;
     /**
      * Override the node name for each instance at start using properties
      */
     @Value("${ignite.nodeName:node1}")
     private String nodeName;
+
+    @Value("${ignite.kubernetes.enabled:false}")
+    private Boolean k8sEnabled;
 
     @Bean(name = "igniteInstance")
     public Ignite igniteInstance() {
@@ -73,17 +73,13 @@ public class IgniteConfig {
         cfg.setMetricsLogFrequency(0);
 
         cfg.setCommunicationSpi(tcpCommunicationSpi());
-        cfg.setDiscoverySpi(tcpDiscovery());
+        if (k8sEnabled) {
+            cfg.setDiscoverySpi(tcpDiscoverySpiKubernetes());
+        } else {
+            cfg.setDiscoverySpi(tcpDiscovery());
+        }
         cfg.setDataStorageConfiguration(dataStorageConfiguration());
         cfg.setCacheConfiguration(cacheConfiguration());
-
-        /**
-         * Not to be used in production
-         * Ignores any failure. It's useful for tests and debugging.
-         * Error: Blocked system-critical thread has been detected. This can lead to cluster-wide undefined behaviour
-         * To avoid long GC pauses tune the jvm.
-         */
-        cfg.setFailureHandler(new NoOpFailureHandler());
         return cfg;
     }
 
@@ -160,7 +156,9 @@ public class IgniteConfig {
     private CacheJdbcPojoStoreFactory cacheJdbcPojoStoreFactory() {
         CacheJdbcPojoStoreFactory<Long, Employee> factory = new CacheJdbcPojoStoreFactory<>();
         factory.setDialect(new BasicJdbcDialect());
-        factory.setDataSourceFactory(getDataSourceFactory());
+
+        //factory.setDataSourceFactory(getDataSourceFactory());
+        factory.setDataSourceFactory(new DbFactory());
         JdbcType employeeType = getEmployeeJdbcType();
         factory.setTypes(employeeType);
         return factory;
@@ -178,8 +176,16 @@ public class IgniteConfig {
         return tcpDiscoverySpi;
     }
 
+    private TcpDiscoverySpi tcpDiscoverySpiKubernetes() {
+        TcpDiscoverySpi spi = new TcpDiscoverySpi();
+        TcpDiscoveryKubernetesIpFinder ipFinder = new TcpDiscoveryKubernetesIpFinder();
+        spi.setIpFinder(ipFinder);
+        return spi;
+    }
+
     private TcpCommunicationSpi tcpCommunicationSpi() {
         TcpCommunicationSpi communicationSpi = new TcpCommunicationSpi();
+        communicationSpi.setMessageQueueLimit(1024);
         communicationSpi.setLocalAddress("localhost");
         communicationSpi.setLocalPort(48100);
         communicationSpi.setSlowClientQueueLimit(1000);
@@ -208,6 +214,10 @@ public class IgniteConfig {
         return dsc;
     }
 
+    /**
+     * Since it serializes you cant pass variables. Use the DbFactory.class
+     * @return
+     */
     private Factory<DataSource> getDataSourceFactory() {
         return () -> {
             DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();

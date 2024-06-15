@@ -34,4 +34,10 @@ To run the code.
 ```bash
 ./gradlew clean build
 ./gradlew bootRun
+./gradlew bootJar
+
+cd build/libs
+java -jar project91-1.0.0.jar --server.port=8081 --ignite.nodeName=node1
+java -jar project91-1.0.0.jar --server.port=8081 --ignite.nodeName=node2
+java -jar project91-1.0.0.jar --server.port=8082 --ignite.nodeName=node3
 ```

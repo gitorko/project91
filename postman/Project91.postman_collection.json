@@ -200,7 +200,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Employees From Ignite Cache",
+			"name": "Get Employees From Ignite Cache - node1",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -211,6 +211,44 @@
 						"localhost"
 					],
 					"port": "8080",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employees From Ignite Cache - node2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employees From Ignite Cache - node3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
 					"path": [
 						"employee"
 					]
