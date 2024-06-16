@@ -132,20 +132,21 @@
 			"response": []
 		},
 		{
-			"name": "Cache Seed Country",
+			"name": "Cache Insert Country",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/cache/seed",
+					"raw": "http://localhost:8080/country/IN/INDIA",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"cache",
-						"seed"
+						"country",
+						"IN",
+						"INDIA"
 					]
 				}
 			},
@@ -157,15 +158,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/cache/FR",
+					"raw": "http://localhost:8080/country/IN",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"cache",
-						"FR"
+						"country",
+						"IN"
 					]
 				}
 			},

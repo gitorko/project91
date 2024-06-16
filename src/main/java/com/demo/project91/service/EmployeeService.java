@@ -11,6 +11,9 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.springframework.stereotype.Service;
 
+/**
+ * Interact with Ignite as key-value store (persistent store)
+ */
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {

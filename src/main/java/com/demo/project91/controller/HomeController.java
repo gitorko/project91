@@ -6,21 +6,22 @@ import java.util.Optional;
 import com.demo.project91.pojo.Company;
 import com.demo.project91.pojo.Customer;
 import com.demo.project91.pojo.Employee;
+import com.demo.project91.service.AccountService;
 import com.demo.project91.service.CompanyService;
+import com.demo.project91.service.CountryService;
 import com.demo.project91.service.CustomerService;
 import com.demo.project91.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
 import org.apache.ignite.configuration.DataRegionConfiguration;
 import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,8 @@ public class HomeController {
     final CustomerService customerService;
     final EmployeeService employeeService;
     final CompanyService companyService;
-    final JdbcTemplate jdbcTemplate;
+    final AccountService accountService;
+    final CountryService countryService;
 
     @GetMapping("/info")
     public String getInfo() {
@@ -56,20 +58,16 @@ public class HomeController {
         return sb.toString();
     }
 
-    @GetMapping("/cache/{code}")
-    public String getFromCache(@PathVariable String code) {
+    @GetMapping("/country/{key}")
+    public String getCountryFromCache(@PathVariable String key) {
         log.info("Fetching data from country-cache!");
-        IgniteCache<String, String> cache = ignite.cache("country-cache");
-        return cache.get(code);
+        return countryService.getValue(key);
     }
 
-    @GetMapping("/cache/seed")
-    public String seedCache() {
+    @PutMapping("/country/{key}/{value}")
+    public String saveCountryCode(@PathVariable String key, @PathVariable String value) {
         log.info("Inserting data to country-cache!");
-        IgniteCache<String, String> cache = ignite.cache("country-cache");
-        cache.put("IN", "India");
-        cache.put("FR", "France");
-        cache.put("JP", "Japan");
+        countryService.insert(key, value);
         return "done!";
     }
 
@@ -98,14 +96,14 @@ public class HomeController {
     @GetMapping("/account/insert")
     public String accountInsert() {
         log.info("Inserting accounts!");
-        customerService.insertAccounts();
+        accountService.insertAccounts();
         return "done!";
     }
 
     @GetMapping("/account")
     public String getAccounts() {
         log.info("Fetching accounts!");
-        return customerService.getAllAccounts();
+        return accountService.getAllAccounts();
     }
 
     @PostMapping("/employee")
@@ -128,11 +126,7 @@ public class HomeController {
 
     @GetMapping("/company/mock-data")
     public void insertDummyDataToDb() {
-        log.info("Starting to insert mock data!");
-        for (int i = 0; i < 10000; i++) {
-            jdbcTemplate.update("INSERT INTO company (id, name) " + "VALUES (?, ?)",
-                    i, "company_" + i);
-        }
-        log.info("Completed insert of mock data!");
+        log.info("Insert mock data!");
+        companyService.insertMockData();
     }
 }

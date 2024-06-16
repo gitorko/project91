@@ -8,7 +8,6 @@ import java.util.List;
 import javax.cache.configuration.Factory;
 import javax.sql.DataSource;
 
-import com.demo.project91.pojo.Company;
 import com.demo.project91.pojo.Customer;
 import com.demo.project91.pojo.Employee;
 import org.apache.ignite.Ignite;
@@ -42,7 +41,7 @@ public class IgniteConfig {
     /**
      * Override the node name for each instance at start using properties
      */
-    @Value("${ignite.nodeName:node1}")
+    @Value("${ignite.nodeName:node0}")
     private String nodeName;
 
     @Value("${ignite.kubernetes.enabled:false}")
@@ -53,9 +52,7 @@ public class IgniteConfig {
         Ignite ignite = Ignition.start(igniteConfiguration());
 
         /**
-         * Only for dev testing
          * If data is persisted then have to explicitly set the cluster state to active.
-         * If there are 3 nodes cluster then this is not required.
          */
         ignite.cluster().state(ClusterState.ACTIVE);
         return ignite;
@@ -132,6 +129,10 @@ public class IgniteConfig {
          * Country cache to store key value pair
          */
         CacheConfiguration cacheConfig = new CacheConfiguration("country-cache");
+        /**
+         * This cache will be stored in non-persistent data region
+         */
+        cacheConfig.setDataRegionName("my-data-region");
         return cacheConfig;
     }
 
@@ -214,12 +215,16 @@ public class IgniteConfig {
         defaultRegionCfg.setInitialSize(10485760);
 
         /**
-         * The cache will be persisted
+         * The cache will be persisted on default region
          */
         defaultRegionCfg.setPersistenceEnabled(true);
 
         regionCfg.setName("my-data-region");
         regionCfg.setInitialSize(104857600);
+        /**
+         * Cache in this region will not be persisted
+         */
+        regionCfg.setPersistenceEnabled(false);
 
         dsc.setDefaultDataRegionConfiguration(defaultRegionCfg);
         dsc.setDataRegionConfigurations(regionCfg);
