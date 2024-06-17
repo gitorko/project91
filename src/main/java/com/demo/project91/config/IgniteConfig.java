@@ -21,6 +21,7 @@ import org.apache.ignite.cache.store.jdbc.JdbcTypeField;
 import org.apache.ignite.cache.store.jdbc.dialect.BasicJdbcDialect;
 import org.apache.ignite.cluster.ClusterState;
 import org.apache.ignite.configuration.CacheConfiguration;
+import org.apache.ignite.configuration.DataPageEvictionMode;
 import org.apache.ignite.configuration.DataRegionConfiguration;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
@@ -224,6 +225,11 @@ public class IgniteConfig {
          * The cache will be persisted on default region
          */
         defaultRegionCfg.setPersistenceEnabled(true);
+
+        /**
+         * Eviction mode
+         */
+        defaultRegionCfg.setPageEvictionMode(DataPageEvictionMode.RANDOM_LRU);
 
         regionCfg.setName("my-data-region");
         regionCfg.setInitialSize(104857600);
