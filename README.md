@@ -50,5 +50,5 @@ java -jar project91-1.0.0.jar --server.port=8082 --ignite.nodeName=node3
 JVM tuning parameters
 
 ```bash
-java -jar -Xms512m -Xmx1024m -XX:MaxDirectMemorySize=256m -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+AlwaysPreTouch project91-1.0.0.jar --server.port=8080 --ignite.nodeName=node0
+java -jar -Xms1024m -Xmx2048m -XX:MaxDirectMemorySize=256m -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+ScavengeBeforeFullGC -XX:+AlwaysPreTouch project91-1.0.0.jar --server.port=8080 --ignite.nodeName=node0
 ```

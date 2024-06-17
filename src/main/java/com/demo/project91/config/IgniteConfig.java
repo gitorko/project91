@@ -219,7 +219,8 @@ public class IgniteConfig {
         DataRegionConfiguration regionCfg = new DataRegionConfiguration();
 
         defaultRegionCfg.setName("default-data-region");
-        defaultRegionCfg.setInitialSize(10485760);
+        defaultRegionCfg.setInitialSize(10 * 1024 * 1024); //10MB
+        defaultRegionCfg.setMaxSize(50 * 1024 * 1024); //50MB
 
         /**
          * The cache will be persisted on default region
@@ -232,7 +233,8 @@ public class IgniteConfig {
         defaultRegionCfg.setPageEvictionMode(DataPageEvictionMode.RANDOM_LRU);
 
         regionCfg.setName("my-data-region");
-        regionCfg.setInitialSize(104857600);
+        regionCfg.setInitialSize(10 * 1024 * 1024); //10MB
+        regionCfg.setMaxSize(50 * 1024 * 1024); //50MB
         /**
          * Cache in this region will not be persisted
          */
