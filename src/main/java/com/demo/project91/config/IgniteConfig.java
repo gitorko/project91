@@ -178,6 +178,9 @@ public class IgniteConfig {
         return factory;
     }
 
+    /**
+     * Nodes discover each other over this port
+     */
     private TcpDiscoverySpi tcpDiscovery() {
         TcpDiscoverySpi tcpDiscoverySpi = new TcpDiscoverySpi();
         TcpDiscoveryMulticastIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
@@ -197,6 +200,9 @@ public class IgniteConfig {
         return spi;
     }
 
+    /**
+     * Nodes communicate with each other over this port
+     */
     private TcpCommunicationSpi tcpCommunicationSpi() {
         TcpCommunicationSpi communicationSpi = new TcpCommunicationSpi();
         communicationSpi.setMessageQueueLimit(1024);
